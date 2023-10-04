@@ -9,4 +9,5 @@ app.listen(3333, () =>
 
 app.get("/", (req,res) => {
     return res.json({message: "hello world"})
+  console.log("hello world")
 })
