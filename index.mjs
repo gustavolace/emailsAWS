@@ -1,7 +1,7 @@
-const nodemailer = require("nodemailer");
-const moment = require("moment");
+import nodemailer from "nodemailer"
+import moment from "moment"
 
-// Configuração de envio de e-mail
+
 const smtp = nodemailer.createTransport({
   host: "smtp.office365.com",
   port: 587,
@@ -20,7 +20,7 @@ smtp.verify((error, success) => {
   }
 });
 
-// Função para enviar e-mail de aniversário
+
 function enviarEmailAniversario(nome, email) {
   const mailOptions = {
     from: "lambdateste@hotmail.com", // Substitua com seu e-mail
@@ -55,3 +55,15 @@ function job(aniversariantes) {
 }
 
 job(aniversariantes);
+
+
+export const handler = async (event) => {
+
+
+  
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify("Hello from Lambda!"),
+  };
+  return response;
+};

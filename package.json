@@ -2,7 +2,7 @@
   "name": "lambda-teste",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cron": "^3.0.0",
-    "express": "^4.18.2",
     "moment": "^2.29.4",
     "nodemailer": "^6.9.5"
   }
