@@ -39,7 +39,7 @@ function enviarEmailAniversario(nome, email) {
 } 
 
 const aniversariantes = [
-  { nome: "João", email: "lsbgustavo@gmail.com", aniversario: "10-03" },
+  { nome: "João", email: "thekidpocotom@gmail.com", aniversario: "10-03" },
 ];
 
 function job(aniversariantes) {
