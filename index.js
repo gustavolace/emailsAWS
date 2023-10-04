@@ -1,12 +1,60 @@
-const express = require("express")
-const app = express()
+const nodemailer = require("nodemailer");
+const moment = require("moment");
 
-app.use(express.json());
+// Configuração de envio de e-mail
+const smtp = nodemailer.createTransport({
+  host: "smtp.office365.com",
+  port: 587,
+  secure: 0,
+  auth: {
+    user: "lambdateste@hotmail.com",
+    pass: "l@mbdaTest",
+  },
+});
 
-app.listen(3333, () =>
-  console.log(`Running on http://localhost:${3333}`)
-);
+smtp.verify((error, success) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("A conexão com o servidor SMTP está funcionando corretamente.");
+  }
+});
 
-app.get("/", (req,res) => {
-    return res.json({message: "hello world"})
-})
+// Função para enviar e-mail de aniversário
+function enviarEmailAniversario(nome, email) {
+  const mailOptions = {
+    from: "lambdateste@hotmail.com", // Substitua com seu e-mail
+    to: email,
+    subject: "Feliz Aniversário!",
+    text: `Olá ${nome} \n\nFeliz Aniversário! 🎉🎂\n\nAtenciosamente,\nSua Empresa`,
+  };
+
+  smtp.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log("E-mail enviado: " + info.response);
+    }
+  });
+} 
+
+const aniversariantes = [
+  { nome: "João", email: "lsbgustavo@gmail.com", aniversario: "10-03" },
+];
+
+function job(aniversariantes) {
+  const hoje = moment().format("MM-DD");
+  console.log(hoje);
+
+  aniversariantes.forEach(({ nome, email, aniversario }) => {
+    console.log(aniversario)
+    if (aniversario === hoje) {
+      enviarEmailAniversario(nome, email);
+    }
+  });
+}
+
+job(aniversariantes);
+
+   
+
