@@ -1,19 +1,21 @@
-import nodemailer from "nodemailer"
-import moment from "moment"
+const nodemailer = require ("nodemailer")
 
+  const aniversariantes = [
+    { nome: "João", email: "joao@exemplo", aniversario: "10-04" },
+  ];
 
-export const handler = async (event) => {
+exports.handler = async (aniversariantes) => {
+
   
-  
-  const smtp = nodemailer.createTransport({
-    host: "smtp.office365.com",
-    port: 587,
-    secure: 0,
-    auth: {
-      user: "lambdateste@hotmail.com",
-      pass: "l@mbdaTest",
-    },
-  });
+const smtp = nodemailer.createTransport({
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
+  secure: Number(process.env.MAIL_SECURE),
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});
   
   smtp.verify((error, success) => {
     if (error) {
@@ -26,7 +28,7 @@ export const handler = async (event) => {
   
   function enviarEmailAniversario(nome, email) {
     const mailOptions = {
-      from: "lambdateste@hotmail.com", // Substitua com seu e-mail
+      from: process.env.MAIL_USER,
       to: email,
       subject: "Feliz Aniversário!",
       text: `Olá ${nome} \n\nFeliz Aniversário! 🎉🎂\n\nAtenciosamente,\nSua Empresa`,
@@ -40,34 +42,35 @@ export const handler = async (event) => {
       }
     });
   } 
-  
-  const aniversariantes = [
-    { nome: "João", email: "thekidpocotom@gmail.com", aniversario: "10-03" },
-  ];
+
   
   function job(aniversariantes) {
-    const hoje = moment().format("MM-DD");
+const hoje = new Date()
+  .toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })
+  .replace(/\//g, "-");
+
+
+
+    console.log(typeof aniversariantes)
     console.log(hoje);
   
     aniversariantes.forEach(({ nome, email, aniversario }) => {
+      console.log(aniversariantes)
       console.log(aniversario)
       if (aniversario === hoje) {
         enviarEmailAniversario(nome, email);
-      }
+      } else { console.log("a data nao é iguaL")}
     });
   }
   
   job(aniversariantes);
 
-
-
-
-
     return {
         statusCode: 200,
-        body: JSON.stringify(aniversariantes),
+        body: JSON.stringify(aniversariantes , "email sent"),
         headers: {
             'Content-Type': 'application/json',
         },
     }
+
   }
